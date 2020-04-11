@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from catboost import CatBoostClassifier
 
 df = pd.read_csv("data.csv")
 
@@ -18,8 +19,8 @@ x_test = test_data[['Age', 'BodyTemp.', 'Fatigue', 'Cough', 'BodyPain', 'SoreThr
 y_train = train_data[['Infected']].to_numpy().reshape(3400, )
 y_test = test_data[['Infected']].to_numpy().reshape(600, )
 
-clf = LogisticRegression()
-clf.fit(x_train, y_train)
+clf = CatBoostClassifier()
+clf.load_model('cb_model')
 
 
 from django.http import HttpResponse
