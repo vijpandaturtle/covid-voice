@@ -48,15 +48,27 @@ def analyse(request):
     SoreThroat = int(request.POST.get('SoreThroat'))
     BreathingDifficulty = int(request.POST.get('BreathingDifficulty'))
     infProb = clf.predict_proba([[Age, BodyTemp, Fatigue, Cough, BodyPain, SoreThroat, BreathingDifficulty]])
-    
-    if request.method == 'POST' and request.FILES.getlist('myfile'):
-        for f in request.FILES.getlist('myfile'): #myfile is the name of your html file button
-            img = cv2.imdecode(np.fromstring(f.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-        result =  x_ray_prediction(img)
-        params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2), 'Xray': round(result*100,2)}
+
+    #if prob is great than 60 render x-ray div
+    if round(infProb[0][1]*100,2) > 60:
+        if request.method == 'POST' and request.FILES.getlist('my-awesome-dropzone'):
+            for f in request.FILES.getlist('my-awesome-dropzone'): #myfile is the name of your html file button
+                img = cv2.imdecode(np.fromstring(f.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            result =  x_ray_prediction(img)
+            params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2), 'Xray': round(result*100,2)}
+            return render(request, 'result0.html', params)
+    else:
+        params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
         return render(request, 'result.html', params)
-    params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
-    return render(request, 'result.html', params)
+
+    # if request.method == 'POST' and request.FILES.getlist('myfile'):
+    #     for f in request.FILES.getlist('myfile'): #myfile is the name of your html file button
+    #         img = cv2.imdecode(np.fromstring(f.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+    #     result =  x_ray_prediction(img)
+    #     params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2), 'Xray': round(result*100,2)}
+    #     return render(request, 'result.html', params)
+    # params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
+    # return render(request, 'result.html', params)
 
 @csrf_exempt
 def api(request):
