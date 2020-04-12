@@ -12,8 +12,8 @@
 
     <title>COVID-19 Voice</title>
   </head>
-  <body style ="background-image: linear-gradient( 109.6deg,  #c31432 11.2%, #240b36 91.1% )">
-  <a class="navbar-brand" style="color: white">Let's Fight Corona Together</a>
+  <body style ="background-image: linear-gradient( 109.6deg,  #35654c2e 11.2%, #e8e3e3 91.1% );" data-gr-c-s-loaded="true">
+  <a class="navbar-brand" style="color: black">Let's Fight Corona Together</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -21,36 +21,36 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#" style="color: white">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="#" style="color: black">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" style="color: white">About Us</a>
+        <a class="nav-link" href="#" style="color: black">About Us</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" style="color: white">Contact Us</a>
+        <a class="nav-link" href="#" style="color: black">Contact Us</a>
       </li>
     </ul>
   </div>
 </nav>
 
-<p align="center" style="font-size: 40px; margin: 15px; color: white">COVID-19 Voice</p>
+<p align="center" style="font-size: 40px; margin: 15px; color: black">COVID-19 Voice</p>
 
 <div style="margin-left: 225px; margin-right: 225px">
 <form method='post' action='/result'  enctype="multipart/form-data">
   {% csrf_token %}
   <div class="row">
   <div class="form-group col-6">
-    <label for="Age" style="color: white; font-size: 20px">Age (in years)</label>
+    <label for="Age" style="color: black; font-size: 20px">Age (in years)</label>
     <input class="form-control" type="number" id="exampleInputEmail1" name="Age" Required>
   </div>
   <div class="form-group col-6">
-    <label for="BodyTemp." style="color: white; font-size: 20px">Body temperature (in &#176;F)</label>
+    <label for="BodyTemp." style="color: black; font-size: 20px">Body temperature (in &#176;F)</label>
     <input class="form-control" id="exampleInputEmail1" name="BodyTemp." Required>
   </div>
   </div>
   <div class="row">
     <div class='form-group col-6'>
-    <label for="Fatigue" style="color: white; font-size: 20px">Fatigue</label>
+    <label for="Fatigue" style="color: black; font-size: 20px">Fatigue</label>
     <select class="form-control" id="exampleFormControlSelect1" name="Fatigue" Required>
       <option value="">None</option>
       <option value="0">No</option>
@@ -58,7 +58,7 @@
     </select>
   </div>
   <div class="form-group col-6">
-    <label for="Cough" style="color: white; font-size: 20px">Cough</label>
+    <label for="Cough" style="color: black; font-size: 20px">Cough</label>
     <select class="form-control" id="exampleFormControlSelect1" name="Cough" Required>
       <option value="">None</option>
       <option value="0">No</option>
@@ -68,7 +68,7 @@
   </div>
   <div class="row">
     <div class="form-group col-6">
-    <label for="BodyPain" style="color: white; font-size: 20px">Body pain</label>
+    <label for="BodyPain" style="color: black; font-size: 20px">Body pain</label>
     <select class="form-control" id="exampleFormControlSelect1" name="BodyPain" Required>
       <option value="">None</option>
       <option value="0">No</option>
@@ -76,7 +76,7 @@
     </select>
   </div>
   <div class="form-group col-6">
-    <label for="SoreThroat" style="color: white; font-size: 20px">Sore throat</label>
+    <label for="SoreThroat" style="color: black; font-size: 20px">Sore throat</label>
     <select class="form-control" id="exampleFormControlSelect1" name="SoreThroat" Required>
       <option value="">None</option>
       <option value="0">Not at all</option>
@@ -87,7 +87,7 @@
   </div>
   <div class="row">
     <div class='form-group col-6'>
-    <label for="BreathingDifficulty" style="color: white; font-size: 20px">Difficulty in breathing</label>
+    <label for="BreathingDifficulty" style="color: black; font-size: 20px">Difficulty in breathing</label>
     <select class="form-control" id="exampleFormControlSelect1" name="BreathingDifficulty" Required>
       <option value="">None</option>
       <option value="0">Not at all</option>
@@ -97,7 +97,7 @@
   </div>
 </div>
   <div class="form-group">
-    <label for="XrayImage" style="color: white; font-size: 20px">XRay File Upload (if available)</label>
+    <label for="XrayImage" style="color: black; font-size: 20px">XRay File Upload (if available)</label>
     <input type="file" name="myfile">
   </div>
   <button type="submit" class="btn btn-outline-light" style="margin-bottom: 20px; margin-top: 20px; float: right">Submit</button>
