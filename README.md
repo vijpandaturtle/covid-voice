@@ -2,7 +2,7 @@
 
 COVID-19 is an infectious disease caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2), previously known as the 2019 novel coronavirus (2019-nCoV), a strain of coronavirus. The first cases were seen in Wuhan, China, in December 2019 before spreading globally. The current outbreak was officially recognized as a pandemic on 11 March 2020 44. The non-specific imaging findings are most commonly of atypical or organizing pneumonia, often with a bilateral, peripheral, and basal predominant distribution 32. No effective treatment or vaccine exists currently (April 2020)  
 
-The struggles among the doctors and other health care specialists on detecting COVID-19 increases when there is a limitation of kits to detect the patients affected by Coronavirus. To avoid or to overcome such a situation, the detection of COVID-19 can be processed via different means.
+The struggles among the doctors and other health care specialists on detecting COVID-19 increases when there is a limitation of kits to detect the patients affected by Coronavirus. To avoid or to overcome such a situation, the detection of COVID-19 can be processed via different means, which may require minimal contact. 
 
 1. **Getting the following basic informations from a person**
     - Age of the person
