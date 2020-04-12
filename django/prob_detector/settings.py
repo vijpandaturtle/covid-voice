@@ -130,3 +130,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 model_path= os.path.join(BASE_DIR,'prob_detector','cb_model')
+model_weights= os.path.join(BASE_DIR,'prob_detector','model.h5')

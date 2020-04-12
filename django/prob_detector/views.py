@@ -47,21 +47,14 @@ def analyse(request):
     BodyPain = int(request.POST.get('BodyPain'))
     SoreThroat = int(request.POST.get('SoreThroat'))
     BreathingDifficulty = int(request.POST.get('BreathingDifficulty'))
-    list=[]
-
+    infProb = clf.predict_proba([[Age, BodyTemp, Fatigue, Cough, BodyPain, SoreThroat, BreathingDifficulty]])
+    
     if request.method == 'POST' and request.FILES.getlist('myfile'):
         for f in request.FILES.getlist('myfile'): #myfile is the name of your html file button
-            filename = f.name
-            list.append(filename)
-            print(filename)
-            fs = FileSystemStorage()
-            filename = fs.save(f.name, f)
-            uploaded_file_url = fs.url(filename)
-            print(uploaded_file_url)
-            result =  x_ray_prediction(uploaded_file_url)
-            print(result)
-    infProb = clf.predict_proba([[Age, BodyTemp, Fatigue, Cough, BodyPain, SoreThroat, BreathingDifficulty]])
-    print(infProb)
+            img = cv2.imdecode(np.fromstring(f.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+        result =  x_ray_prediction(img)
+        params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2), 'Xray': round(result*100,2)}
+        return render(request, 'result.html', params)
     params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
     return render(request, 'result.html', params)
 
@@ -75,13 +68,12 @@ def api(request):
     SoreThroat = int(request.POST.get('SoreThroat'))
     BreathingDifficulty = int(request.POST.get('BreathingDifficulty'))
     infProb = clf.predict_proba([[Age, BodyTemp, Fatigue, Cough, BodyPain, SoreThroat, BreathingDifficulty]])
-    print(infProb)
     params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
     return HttpResponse(json.dumps(params))
 
-def x_ray_prediction(filepath):
-    print(filepath)
-    img = cv2.resize(cv2.cvtColor(cv2.imread(filepath), cv2.COLOR_BGR2RGB), (256, 256))
+def x_ray_prediction(img):
+    img = cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), (256, 256))
+    # img = cv2.resize(cv2.cvtColor(cv2.imread(filepath), cv2.COLOR_BGR2RGB), (256, 256))
     img = img / 255
     global sess1
     sess1 = tf.Session()
@@ -129,7 +121,7 @@ def x_ray_prediction(filepath):
 
     # output
     model.add(keras.layers.Dense(4, activation='softmax'))
-    model.load_weights('model.h5')
+    model.load_weights(settings.model_weights)
 
     # model = keras.models.load_model('dense.h5')
 
