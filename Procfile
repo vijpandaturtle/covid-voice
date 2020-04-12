@@ -1,0 +1,1 @@
+web: gunicorn prob_detector.wsgi --log-file -
