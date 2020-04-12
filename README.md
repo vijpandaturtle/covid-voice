@@ -29,4 +29,4 @@ A web app has been created to get the inputs from users, this will be helpful fo
 **We are also building voice based dialogflow skill to get the information from a person**
 
 ### Future Scope
-This project can be extended by including more vital measurements through images such as heart rate, BMI and temperature. Both the models used for x-ray and probability prediction need to be fine-tuned. We also can introduce new datasets along with database integration and edge case handling. 
+This project can be extended by including more vital measurements through images such as heart rate, BMI, temperature and more factors for probability prediction such as travel history and pre-existing conditions. Both the models used for x-ray and probability prediction need to be fine-tuned. We also can introduce new datasets along with database integration and edge case handling. 
