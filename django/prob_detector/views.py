@@ -2,6 +2,11 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from catboost import CatBoostClassifier
+from django.core.files.storage import FileSystemStorage
+from prob_detector import settings
+import keras
+import tensorflow as tf
+import cv2
 
 df = pd.read_csv("data.csv")
 
@@ -20,7 +25,7 @@ y_train = train_data[['Infected']].to_numpy().reshape(3400, )
 y_test = test_data[['Infected']].to_numpy().reshape(600, )
 
 clf = CatBoostClassifier()
-clf.load_model('cb_model')
+clf.load_model(settings.model_path)
 
 
 from django.http import HttpResponse
@@ -42,7 +47,21 @@ def analyse(request):
     BodyPain = int(request.POST.get('BodyPain'))
     SoreThroat = int(request.POST.get('SoreThroat'))
     BreathingDifficulty = int(request.POST.get('BreathingDifficulty'))
+    list=[]
+
+    if request.method == 'POST' and request.FILES.getlist('myfile'):
+        for f in request.FILES.getlist('myfile'): #myfile is the name of your html file button
+            filename = f.name
+            list.append(filename)
+            print(filename)
+            fs = FileSystemStorage()
+            filename = fs.save(f.name, f)
+            uploaded_file_url = fs.url(filename)
+            print(uploaded_file_url)
+            result =  x_ray_prediction(uploaded_file_url)
+            print(result)
     infProb = clf.predict_proba([[Age, BodyTemp, Fatigue, Cough, BodyPain, SoreThroat, BreathingDifficulty]])
+    print(infProb)
     params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
     return render(request, 'result.html', params)
 
@@ -59,3 +78,65 @@ def api(request):
     print(infProb)
     params = {'InfProb': round(infProb[0][1]*100, 2), 'Degree': round(infProb[0][1]*180, 2)}
     return HttpResponse(json.dumps(params))
+
+def x_ray_prediction(filepath):
+    print(filepath)
+    img = cv2.resize(cv2.cvtColor(cv2.imread(filepath), cv2.COLOR_BGR2RGB), (256, 256))
+    img = img / 255
+    global sess1
+    sess1 = tf.Session()
+    keras.backend.set_session(sess1)
+    global model
+
+    model = keras.models.Sequential()
+    model.add(keras.layers.Convolution2D(16, 3, input_shape=(256, 256, 3)))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.Convolution2D(16, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.MaxPooling2D(strides=2))
+    model.add(keras.layers.Convolution2D(32, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.Convolution2D(32, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.MaxPooling2D(strides=2))
+    model.add(keras.layers.Convolution2D(64, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.Convolution2D(64, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.MaxPooling2D(strides=2))
+    model.add(keras.layers.Convolution2D(128, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.Convolution2D(128, 3))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.ReLU())
+    model.add(keras.layers.MaxPooling2D(strides=2))
+
+    # Classification layer
+    model.add(keras.layers.Convolution2D(128, 4))
+
+    ##average pooling
+    model.add(keras.layers.Flatten())
+
+    ##Dropout(0.3)
+    model.add(keras.layers.Dropout(0.3))
+
+    # output
+    model.add(keras.layers.Dense(4, activation='softmax'))
+    model.load_weights('model.h5')
+
+    # model = keras.models.load_model('dense.h5')
+
+    global graph1
+    graph1 = tf.get_default_graph()
+    with graph1.as_default():
+        keras.backend.set_session(sess1)
+        y_p = model.predict(np.reshape(img, (1, 256, 256, 3)))
+        y_p = np.around(y_p, decimals=2).T
+        return y_p[3][0]

@@ -37,7 +37,8 @@
 <p align="center" style="font-size: 40px; margin: 15px; color: white"> COVID-19 Probability Detector </p>
 
 <div style="margin-left: 225px; margin-right: 225px">
-<form method='post' action='/result'> {% csrf_token %}
+<form method='post' action='/result'  enctype="multipart/form-data"> 
+  {% csrf_token %}
   <div class="form-group">
     <label for="Age" style="color: white; font-size: 20px">Age (in years)</label>
     <input class="form-control" type="number" id="exampleInputEmail1" name="Age" Required>
@@ -87,6 +88,10 @@
       <option value="1">Little bit</option>
       <option value="2">Too much</option>
     </select>
+  </div>
+  <div class="form-group">
+    <label for="XrayImage" style="color: white; font-size: 20px">XRay File Upload(if available)</label>
+    <input type="file" name="myfile">
   </div>
   <button type="submit" class="btn btn-outline-light" style="margin-bottom: 20px; margin-top: 20px; float: right">Submit</button>
 </form>
